@@ -80,7 +80,3 @@ This generates a `dist/` folder ready for deployment.
   npm install -g netlify-cli
   netlify deploy --prod --dir=dist
   ```
-
----
-::contentReference[oaicite:0]{index=0}
-```
