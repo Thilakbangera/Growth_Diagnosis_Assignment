@@ -12,9 +12,10 @@ const App = () => {
   // Prefilled fallback content - used exactly as specified
   const fallbackContent = {
     part1: {
-      narrative: "Bottleneck Diagnosis Using Prompted AI Dialogue",
+      title: "Bottleneck Diagnosis Using Prompted AI Dialogue",
       prompts: [
         {
+          id: 'mindset',
           category: "Mindset",
           subcategory: "Founder's Mental Model",
           issue: "reluctance to delegate",
@@ -24,6 +25,7 @@ const App = () => {
           layer: "Personal"
         },
         {
+          id: 'systemic',
           category: "Systemic",
           subcategory: "Talent/Process Capability",
           issue: "rapid hiring w/out systems",
@@ -33,6 +35,7 @@ const App = () => {
           layer: "Systemic"
         },
         {
+          id: 'market',
           category: "Market",
           subcategory: "Customer Strategy/Positioning",
           issue: "unclear pricing segment",
@@ -76,6 +79,7 @@ const App = () => {
   };
 
   // Document fetching and parsing logic
+  // Attempts DOCX fetch → Markdown fallback → prefilled content
   const fetchAndParseDocument = async () => {
     setLoading(true);
     setError(null);
@@ -118,7 +122,7 @@ const App = () => {
         console.log('Markdown parsing failed, using fallback content...');
       }
 
-      // Fallback: Use prefilled content
+      // Final fallback: Use prefilled content
       setContent(fallbackContent);
       setLoading(false);
 
@@ -131,6 +135,7 @@ const App = () => {
   };
 
   // Parse document content into structured format
+  // Returns null to trigger fallback content usage
   const parseDocumentContent = (text) => {
     try {
       // Basic parsing logic - in a real implementation, this would be more sophisticated
@@ -143,6 +148,7 @@ const App = () => {
   };
 
   // Parse Markdown content into structured format
+  // Returns null to trigger fallback content usage
   const parseMarkdownContent = (text) => {
     try {
       // Basic parsing logic - in a real implementation, this would be more sophisticated
@@ -232,7 +238,7 @@ const App = () => {
           <div className="grid md:grid-cols-3 gap-6">
             {content?.part1?.prompts?.map((prompt, index) => (
               <motion.div
-                key={index}
+                key={prompt.id}
                 whileHover={{ scale: 1.02 }}
                 className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100"
               >
@@ -256,14 +262,14 @@ const App = () => {
                 </div>
 
                 <button
-                  onClick={() => setExpandedPrompt(expandedPrompt === index ? null : index)}
+                  onClick={() => setExpandedPrompt(expandedPrompt === prompt.id ? null : prompt.id)}
                   className="w-full text-left text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors duration-200"
                 >
-                  {expandedPrompt === index ? 'Hide Prompt' : 'Show AI Prompt'}
+                  {expandedPrompt === prompt.id ? 'Hide Prompt' : 'Show AI Prompt'}
                 </button>
 
                 <AnimatePresence>
-                  {expandedPrompt === index && (
+                  {expandedPrompt === prompt.id && (
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: 'auto' }}
