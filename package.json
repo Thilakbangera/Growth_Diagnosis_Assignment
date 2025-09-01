@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "framer-motion": "^12.23.12",
+    "mammoth": "^1.10.0"
+  }
+}
